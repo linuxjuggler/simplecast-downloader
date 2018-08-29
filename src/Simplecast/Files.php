@@ -3,6 +3,7 @@
 namespace Simplecast;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local as Adapter;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -54,16 +55,21 @@ class Files
         $file = $isImage ? $meta->images->large : $meta->audio_url;
         $type = $isImage ? 'artwork' : 'audio';
 
-        $client->get($file, [
-            'sink' => $sink,
-            'progress' => function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) use ($progressBar, $meta, $type) {
-                $total = \ByteUnits\bytes($dl_total_size)->format('MB');
-                $sofar = \ByteUnits\bytes($dl_size_so_far)->format('MB');
-                $percentage = '0.00' != $dl_total_size ? \number_format($dl_size_so_far * 100 / $dl_total_size) : 0;
-                $progressBar->setMessage("Downloading {$meta->title} {$type} file, {$sofar}/{$total} ({$percentage}%)", 'status');
-                $progressBar->display();
-            },
-        ]);
+        try {
+            $client->get($file, [
+                'sink' => $sink,
+                'progress' => function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) use ($progressBar, $meta, $type) {
+                    $total = \ByteUnits\bytes($dl_total_size)->format('MB');
+                    $sofar = \ByteUnits\bytes($dl_size_so_far)->format('MB');
+                    $percentage = '0.00' != $dl_total_size ? \number_format($dl_size_so_far * 100 / $dl_total_size) : 0;
+                    $progressBar->setMessage("Downloading {$meta->title} {$type} file, {$sofar}/{$total} ({$percentage}%)", 'status');
+                    $progressBar->display();
+                },
+            ]);
+        } catch (ClientException $clientException) {
+            echo $clientException->getMessage(). PHP_EOL;
+            exit;
+        }
     }
 
     protected function hasDirectory($meta): void

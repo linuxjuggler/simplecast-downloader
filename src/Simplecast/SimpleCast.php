@@ -3,7 +3,9 @@
 namespace Simplecast;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,9 +32,13 @@ class SimpleCast extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $response = $this->client->get($this->apiUrl, [
-            'headers' => ['X-API-KEY' => $input->getOption('key')],
-        ])->getBody();
+
+        if($input->getOption('key') === null | $input->getOption('id') === null) {
+            $output->writeln('<error>You should provide both options Key and Id</error>');
+            exit;
+        }
+
+        $response = $this->getResponse($input, $output);
 
         $meta = collect(\json_decode($response));
         $this->initProgressBar($meta->count(), $output);
@@ -62,5 +68,20 @@ class SimpleCast extends Command
         $this->progressBar = new ProgressBar($output, $count);
         $this->progressBar->setFormat("%status%\n%current%/%max%  [%bar%] %percent:3s%%\n");
         $this->progressBar->start();
+    }
+
+    protected function getResponse(InputInterface $input, OutputInterface $output): \Psr\Http\Message\StreamInterface
+    {
+        try {
+            return $this->client->get($this->apiUrl, [
+                'headers' => ['X-API-KEY' => $input->getOption('key')],
+            ])->getBody();
+        } catch (ClientException $clientException) {
+            $output->writeln("<error>{$clientException->getMessage()}</error>");
+            exit;
+        } catch (\Exception $exception) {
+            $output->writeln("<error>{$exception->getMessage()}</error>");
+            exit;
+        }
     }
 }

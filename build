@@ -16,5 +16,4 @@ docker build --no-cache \
              --file Dockerfile \
              --build-arg VCS_REF=$COMMIT_HASH \
              --build-arg IMAGE_NAME=$IMAGE_NAME \
-             --squash --force-rm --compress --rm \
-             -t $IMAGE_NAME
+             -t $IMAGE_NAME .
