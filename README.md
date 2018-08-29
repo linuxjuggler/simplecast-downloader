@@ -1,3 +1,7 @@
+[![Docker Pulls](https://img.shields.io/docker/pulls/zaherg/simplecast-downloader.svg)](https://hub.docker.com/r/zaherg/simplecast-downloader/) [![](https://images.microbadger.com/badges/image/zaherg/simplecast-downloader.svg)](https://microbadger.com/images/zaherg/simplecast-downloader "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/zaherg/simplecast-downloader.svg)](https://microbadger.com/images/zaherg/simplecast-downloader "Get your own version badge on microbadger.com")
+
+
+
 # Simplecast Downloader
 
 This simple script will give you the ability to export and download all your __personal__ Podcasts that you have uploaded to Simplecast.com
