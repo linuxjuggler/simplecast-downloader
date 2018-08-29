@@ -55,7 +55,7 @@ docker pull zaherg/simplecast-downloader
 Second we should run the script:
 
 ```
-docker run --rm --name simplecast \
+docker run -it --rm --name simplecast \
            --volume <your_local_path>:/app/backup \
            zaherg/simplecast-downloader:latest download --key=<your_api_key> --id=<your_podcast_id>
 ```
