@@ -39,4 +39,25 @@ And the script will start to download the files and store them within your backu
 
 ### Via Docker
 
-To be added later.
+You can start using the script using Docker by:
+
+1. Pulling the image from Docker hub
+2. Run the image with Environment variable and Shared storage and execute the script
+
+So lets start.
+
+First we need to pull the image:
+
+```
+docker pull zaherg/simplecast-downloader
+```
+
+Second we should run the script:
+
+```
+docker run --rm --name simplecast \
+           --volume <your_local_path>:/app/backup \
+           zaherg/simplecast-downloader:latest download --key=<your_api_key> --id=<your_podcast_id>
+```
+
+__NOTE__: When using docker, no need to setup a backup directory environment variable, as the data will be stored within the image and using the volume you can access it.
