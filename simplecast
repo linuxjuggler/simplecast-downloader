@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use GuzzleHttp\Client;
+use Simplecast\SimpleCast;
+use Symfony\Component\Console\Application;
+
+$app = new Application('SimpleCast Downloader', '0.1');
+$client = new Client([
+    'base_uri'        => 'https://api.simplecast.com/v1/',
+    'allow_redirects' => true,
+]);
+
+$app->add(new SimpleCast($client));
+
+$app->run();

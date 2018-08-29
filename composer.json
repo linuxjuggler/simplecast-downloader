@@ -1,0 +1,45 @@
+{
+    "name": "zaherg/simplecast-downloader",
+    "description": "a small CLI app to download your simplecast podcasts",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mhd Zaher Ghaibeh",
+            "email": "z@zah.me"
+        }
+    ],
+    "autoload":{
+        "psr-4": {
+            "Simplecast\\" : "src/Simplecast/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "symfony/console": "^4.1",
+        "tightenco/collect": "^5.6",
+        "guzzlehttp/guzzle": "^6",
+        "league/flysystem": "~1.0",
+        "gabrielelana/byte-units": "^0.5.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.12",
+        "squizlabs/php_codesniffer": "^3.3"
+    },
+    "scripts": {
+        "phpcs": "php vendor/bin/phpcs",
+        "fix" : "php vendor/bin/php-cs-fixer fix --config=.php_cs",
+        "full": [
+            "@fix",
+            "@phpcs"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
