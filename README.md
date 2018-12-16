@@ -50,9 +50,10 @@ You can start using the script using Docker by:
 
 So lets start.
 
-First we need to pull the image:
+First we need to build the image:
 
 ```
+docker build -t zaherg/simplecast-downloader .
 docker pull zaherg/simplecast-downloader
 ```
 
